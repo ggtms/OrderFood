@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ggtms</groupId>
+    <artifactId>OrderFood</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>OrderFood Maven Webapp</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+    <!--<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>srping-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--<maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>-->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <commonslang3.version>3.4</commonslang3.version>
+        <!--sonar 的地址 -->
+        <sonar.host.url>http://10.18.100.71:9000</sonar.host.url>
+        <!--<sonar.report.export.path>/report/sonar-report.json</sonar.report.export.path>-->
+        <!--源代码路径 -->
+        <sonar.sources>src/main/</sonar.sources>
+        <!--测试代码路径 -->
+        <sonar.tests>src/test/</sonar.tests>
+        <!-- 生成结果方式-->
+        <sonar.issuesReport.html.enable>true</sonar.issuesReport.html.enable>
+        <sonar.issuesReport.json.enable>true</sonar.issuesReport.json.enable>
+        <!-- 分析插件-->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <!-- 报表组件路径-->
+        <sonar.jacoco.reportPaths>${project.build.directory}/coverage-reports/jacoco-ut.exec</sonar.jacoco.reportPaths>
+        <!-- 报表组件数据文件路径-->
+        <jacoco.dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco.dataFile>
+        <sonar.language>java</sonar.language>
+        <!-- sonar 扫描使用的验证token ，重要-->
+        <sonar.login>d09154f9c69cdb5e59186489653fd4cddce337cb</sonar.login>
+        <!-- 跳过单元测试, 可在命令中使用 -DskipTests=false 来开启单元测试 -->
+        <skipTests>true</skipTests>
+    </properties>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.10</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.3.0.603</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <configuration>
+                    <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                    <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                    <skip>false</skip>
+                    <output>file</output>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+            <!-- 该插件用于跳过单元测试, -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <distributionManagement>
+        <repository>
+            <id>devops-release</id>
+            <name>devops-release</name>
+            <url> http://10.18.101.56:8081/repository/devops-release/</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>devops-release</id>
+            <name>devops-release</name>
+            <url> http://10.18.101.56:8081/repository/devops-release/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ali</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <docker.image.prefix>10.18.101.186/devops</docker.image.prefix>
+                <registry.username>admin</registry.username>
+                <registry.password>hPer2016*</registry.password>
+                <image.version>${project.version}</image.version>
+            </properties>
+            <build>
+                <finalName>backend-cloud</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.21.0</version>
+                        <configuration>
+                            <authConfig>
+                                <username>${registry.username}</username>
+                                <password>${registry.password}</password>
+                            </authConfig>
+                            <verbose>true</verbose>
+                            <useColor>true</useColor>
+                            <sourceDirectory>/</sourceDirectory>
+                            <images>
+                                <image>
+                                    <name>${docker.image.prefix}/${project.groupId}/${project.artifactId}:${image.version}</name>
+                                    <build>
+                                        <cleanup></cleanup>
+                                        <dockerFileDir>src/main/docker</dockerFileDir>
+                                        <assembly>
+                                            <descriptor>${project.basedir}/src/main/docker/assembly.xml</descriptor>
+                                        </assembly>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>docker-build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker-push</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
