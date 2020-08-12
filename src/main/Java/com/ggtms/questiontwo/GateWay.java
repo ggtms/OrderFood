@@ -4,7 +4,7 @@ package com.ggtms.questiontwo;
  * @author ggtms
  * @ 2020-08-05 14:31
  */
-public class Test {
+public class GateWay {
     public static void main(String[] args) {
         Car fastCar = CarFactory.getCar("TT");
         fastCar.apply();
