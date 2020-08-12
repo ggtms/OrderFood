@@ -20,6 +20,7 @@ public class GateWay {
 
         // 输入用户信息并校验
         Scanner sc = new Scanner(System.in);
+        System.out.print("请输入用户名：");
         // 校验用户名
         while (true){
             String name = sc.next();
@@ -31,6 +32,7 @@ public class GateWay {
             }
         }
 
+        System.out.print("请输入电话号码：");
         // 校验电话号码
         boolean flag = true;
         while(flag){
@@ -48,20 +50,24 @@ public class GateWay {
             }
         }
 
+        System.out.print("请输入身份证号：");
         // 校验身份证，判断性别
+        // TODO
         while(true){
             String idCard = sc.next();
             // 判断前17位为数字
             for (int i = 0; i < 17; i++) {
                 if(!Character.isDigit(idCard.charAt(i))){
                     System.out.println("输入的身份证不合法！");
-                    break;
+                    i = 17;
                 }
             }
             // 判断最后一位的合法性
             if(idCard.endsWith("X") | Character.isDigit(idCard.charAt(idCard.length()-1))) {
                 user.setIdCard(idCard);
                 break;
+            }else {
+                System.out.println("输入的身份证不合法!请重新输入。");
             }
         }
         // 判断性别
@@ -79,6 +85,6 @@ public class GateWay {
         String day = user.getIdCard().substring(12).substring(0,2);
         user.setBirthday(year+"年"+month+"月"+day+"日");
         // 显示出生日期
-        user.getBirthday().toString();
+        System.out.print("您的生日是：" + user.getBirthday().toString());
     }
 }
